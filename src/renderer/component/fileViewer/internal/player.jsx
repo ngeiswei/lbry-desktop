@@ -27,6 +27,7 @@ class MediaPlayer extends React.PureComponent {
     };
 
     this.togglePlayListener = this.togglePlay.bind(this);
+    this.togglePlayOrFullScreenListener = this.togglePlayOrFullScreen.bind(this);
     this.toggleFullScreenVideo = this.toggleFullScreen.bind(this);
   }
 
@@ -88,7 +89,8 @@ class MediaPlayer extends React.PureComponent {
       );
     }
 
-    document.addEventListener('keydown', this.togglePlayListener);
+    // document.addEventListener('keydown', this.togglePlayListener);
+    document.addEventListener('keydown', this.togglePlayOrFullScreenListener);
     const mediaElement = this.media.children[0];
     if (mediaElement) {
       if (position) {
@@ -140,7 +142,8 @@ class MediaPlayer extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.togglePlayListener);
+    // document.removeEventListener('keydown', this.togglePlayListener);
+    document.removeEventListener('keydown', this.togglePlayOrFullScreenListener);
     const mediaElement = this.media.children[0];
     if (mediaElement) {
       mediaElement.removeEventListener('click', this.togglePlayListener);
@@ -173,6 +176,16 @@ class MediaPlayer extends React.PureComponent {
         mediaElement.pause();
       } else {
         mediaElement.play();
+      }
+    }
+  }
+
+  togglePlayOrFullScreen(event) {
+    if (event.type === 'keydown') {
+      if (event.key == 'f' || event.key == 'F') {
+        toggleFullScreen(event);
+      } else if (event.code == 'Space') {
+        togglePlay(event);
       }
     }
   }
